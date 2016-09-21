@@ -7,7 +7,7 @@ public class Cell
   private boolean alive;
   private Cell[][][] board;
 
-  public Cell(boolean alive, Cell[][][] board)
+  public Cell(boolean alive, Cell[][][] board, int x, int y, int z)
   {
     this.alive = alive;
     this.board = board;
@@ -26,6 +26,8 @@ public class Cell
   public int getNumberOfNeighbors()
   {
     int neighbors = 0;
+
+    for(int )
 
     return neighbors;
   }

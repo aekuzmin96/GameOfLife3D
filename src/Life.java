@@ -3,11 +3,14 @@
  */
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class Life extends Application
+
+public class Life extends Application implements EventHandler<ActionEvent>
 {
 
   private Cell[][][] currentState = new Cell[30][30][30];
@@ -23,6 +26,12 @@ public class Life extends Application
     primaryStage.show();
   }
 
+  @Override
+  public void handle(ActionEvent event)
+  {
+
+  }
+
   private void game()
   {
     for(int x = 0; x < 30; x++)
@@ -31,7 +40,7 @@ public class Life extends Application
       {
         for(int z = 0; z < 30; z++)
         {
-          currentState[x][y][z] = new Cell(true, currentState);
+          currentState[x][y][z] = new Cell(true, currentState, x, y, z);
         }
       }
     }
