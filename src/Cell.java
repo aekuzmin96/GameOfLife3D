@@ -30,22 +30,24 @@ public class Cell
   public int getNeighbors()
   {
     int neighbors = 0;
-    neighbors += getNeighborsHelper(x - 1, y, z);
-    neighbors += getNeighborsHelper(x + 1, y, z);
-    neighbors += getNeighborsHelper(x, y - 1, z);
-    neighbors += getNeighborsHelper(x, y + 1, z);
-    neighbors += getNeighborsHelper(x, y , z - 1);
-    neighbors += getNeighborsHelper(x, y , z + 1);
+
+    for(int xx = x - 1; xx <= x + 1; x++)
+    {
+      for(int yy = y - 1; yy <= y + 1; y++)
+      {
+        for(int zz = z - 1; zz <= z + 1; z++)
+        {
+          if(!((xx == x) && (yy == y) && (zz == z)))
+          {
+            if(board[xx][yy][zz].getAlive())
+            {
+              neighbors++;
+            }
+          }
+        }
+      }
+    }
 
     return neighbors;
-  }
-
-  private int getNeighborsHelper(int xAxis, int yAxis, int zAxis)
-  {
-    if(board[xAxis][yAxis][zAxis].getAlive())
-    {
-      return 1;
-    }
-    return 0;
   }
 }

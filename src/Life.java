@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 public class Life extends Application implements EventHandler<ActionEvent>
 {
 
-  private Cell[][][] currentState = new Cell[30][30][30];
-  private Cell[][][] nextState = new Cell[30][30][30];
+  private Cell[][][] currentState = new Cell[31][31][31];
+  private Cell[][][] nextState = new Cell[31][31][31];
 
   @Override
   public void start(Stage primaryStage)
@@ -34,17 +34,16 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private void game()
   {
-    for(int x = 0; x < 30; x++)
+    for(int x = 1; x < 31; x++)
     {
-      for(int y = 0; y < 30; y++)
+      for(int y = 1; y < 31; y++)
       {
-        for(int z = 0; z < 30; z++)
+        for(int z = 1; z < 31; z++)
         {
           currentState[x][y][z] = new Cell(true, currentState, x, y, z);
         }
       }
     }
-
   }
 
   public static void main(String[] args)
