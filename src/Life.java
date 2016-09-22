@@ -5,9 +5,11 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 
 public class Life extends Application implements EventHandler<ActionEvent>
@@ -15,14 +17,16 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private Cell[][][] currentState = new Cell[31][31][31];
   private Cell[][][] nextState = new Cell[31][31][31];
+  final Group root = new Group();
 
   @Override
   public void start(Stage primaryStage)
   {
-    StackPane root = new StackPane();
+    Scene scene = new Scene(root, 800, 600, true);
     primaryStage.setTitle("Game of Life in 3D");
-    primaryStage.setScene(new Scene(root, 800, 600));
+    primaryStage.setScene(scene);
 
+    initializeGame();
     primaryStage.show();
   }
 
@@ -32,7 +36,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   }
 
-  private void game()
+  private void initializeGame()
   {
     for(int x = 1; x < 31; x++)
     {
