@@ -35,6 +35,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
     Scene scene = new Scene(root, 1000, 750, true);
     primaryStage.setTitle("Game of Life in 3D");
     primaryStage.setScene(scene);
+    scene.setFill(Color.GRAY);
 
     GridPane grid = new GridPane();
     grid.setAlignment(Pos.TOP_RIGHT);
