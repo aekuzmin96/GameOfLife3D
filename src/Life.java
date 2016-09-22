@@ -8,11 +8,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.awt.TextField;
 
 
 public class Life extends Application implements EventHandler<ActionEvent>
@@ -29,14 +32,14 @@ public class Life extends Application implements EventHandler<ActionEvent>
   @Override
   public void start(Stage primaryStage)
   {
-    Scene scene = new Scene(root, 800, 600, true);
+    Scene scene = new Scene(root, 1000, 750, true);
     primaryStage.setTitle("Game of Life in 3D");
     primaryStage.setScene(scene);
 
     GridPane grid = new GridPane();
     grid.setAlignment(Pos.TOP_RIGHT);
-    grid.setHgap(15);
-    grid.setVgap(15);
+    grid.setHgap(5);
+    grid.setVgap(5);
 
     TextField r1Text = new TextField("Enter r1 value");
     TextField r2Text = new TextField("Enter r2 value");
@@ -44,7 +47,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
     TextField r4Text = new TextField("Enter r4 value");
 
 
-    grid.add(r1Text);
+    grid.add(new Label("R1 Value: "), 1, 1);
+    grid.add(new Label("R2 Value: "), 1, 5);
+    grid.add(new Label("R3 Value: "), 1, 10);
+    grid.add(new Label("R4 Value: "), 1, 15);
+    grid.add(r1Text, 1, 3);
 
 
     root.getChildren().add(grid);
