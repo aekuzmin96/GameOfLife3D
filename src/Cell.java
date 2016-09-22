@@ -15,36 +15,35 @@ public class Cell
 
   public Cell(boolean alive, Cell[][][] board, int x, int y, int z)
   {
-    final PhongMaterial redMaterial = new PhongMaterial();
-    redMaterial.setDiffuseColor(Color.RED);
+    final PhongMaterial material = new PhongMaterial();
+    material.setDiffuseColor(Color.GREEN);
     this.alive = alive;
     this.board = board;
     this.x = x;
     this.y = y;
     this.z = z;
     cellBox = new Box(1, 1, 1);
-    cellBox.setMaterial(redMaterial);
+    cellBox.setMaterial(material);
     if(!alive)
     {
       cellBox.setVisible(false);
     }
   }
 
-  public void setAlive(boolean state)
+  public void setAlive()
   {
-    alive = state;
+    alive = true;
+    cellBox.setVisible(true);
   }
 
+  public void setDead()
+  {
+    alive = false;
+    cellBox.setVisible(false);
+  }
+  
   public boolean getAlive()
   {
-    if(alive)
-    {
-      cellBox.setVisible(true);
-    }
-    else
-    {
-      cellBox.setVisible(false);
-    }
     return alive;
   }
 
@@ -60,9 +59,12 @@ public class Cell
         {
           if(!((xx == x) && (yy == y) && (zz == z)))
           {
-            if(board[xx][yy][zz].getAlive())
+            if(xx > 0 && yy > 0 && zz > 0 && xx < 31 && yy < 31 && zz < 31)
             {
-              neighbors++;
+              if (board[xx][yy][zz].getAlive())
+              {
+                neighbors++;
+              }
             }
           }
         }

@@ -86,26 +86,26 @@ public class Life extends Application implements EventHandler<ActionEvent>
     subScene.setCamera(camera);
     
     HBox hbox = new HBox();
-    setUp(hbox);
     borderPane.setTop(hbox);
     borderPane.setCenter(subScene);
     root.getChildren().add(cube);
-    initializeGame();
     buildCamera();
+    initializeGame();
     buildCube();
+    setUp(hbox);
     primaryStage.show();
     new RotateLoop().start();
   }
   
   private void setUp(HBox hbox)
   {
-    TextField r1Text = new TextField(" ");
+    TextField r1Text = new TextField(r1 + "");
     r1Text.setPrefSize(40, 5);
-    TextField r2Text = new TextField(" ");
+    TextField r2Text = new TextField(r2 + "");
     r2Text.setPrefSize(40, 5);
-    TextField r3Text = new TextField(" ");
+    TextField r3Text = new TextField(r3 + "");
     r3Text.setPrefSize(40, 5);
-    TextField r4Text = new TextField(" ");
+    TextField r4Text = new TextField(r4 + "");
     r4Text.setPrefSize(40, 5);
   
     hbox.getChildren().addAll(new Label("R1:"), r1Text);
@@ -117,12 +117,18 @@ public class Life extends Application implements EventHandler<ActionEvent>
   class RotateLoop extends AnimationTimer
   {
     int frame = 0;
+    long updateTime = 0;
     @Override
     public void handle(long time)
     {
       frame ++;
       cube.ry.setAngle(cameraXform.ry.getAngle() - (0.5 * frame));
       cube.rx.setAngle(cameraXform.rx.getAngle() - (0.5 * frame));
+      if(time - updateTime >= 1_000_000_000)
+      {
+        updateLife();
+        updateTime = time;
+      }
     }
   }
   
@@ -131,18 +137,48 @@ public class Life extends Application implements EventHandler<ActionEvent>
   {
 
   }
+  
+  private void updateLife()
+  {
+    nextState = currentState;
+    for(int x = 1; x < 31; x++)
+    {
+      for(int y = 1; y < 31; y++)
+      {
+        for(int z = 1; z < 31; z++)
+        {
+          int neighbors = currentState[x][y][z].getNeighbors();
+          if(currentState[x][y][z].getAlive() && (neighbors > 18 || neighbors < 6))
+          {
+            nextState[x][y][z].setDead();
+          }
+          if(!currentState[x][y][z].getAlive() && (neighbors >= 8 && neighbors <= 16))
+          {
+            nextState[x][y][z].setAlive();
+          }
+        }
+      }
+    }
+    currentState = nextState;
+  }
 
   private void initializeGame()
   {
+    r1 = 8;
+    r2 = 16;
+    r3 = 18;
+    r4 = 6;
+  
+    Random rand = new Random();
+    
     for(int x = 1; x < 32; x++)
     {
       for(int y = 1; y < 32; y++)
       {
         for(int z = 1; z < 32; z++)
         {
-          Random rand = new Random();
-          int n = rand.nextInt(10) + 1;
-          if(n % 4 == 0)
+          int n = rand.nextInt(100);
+          if(n > 86)
           {
             currentState[x][y][z] = new Cell(true, currentState, x, y, z);
           }
@@ -151,6 +187,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         }
       }
     }
+    nextState = currentState;
   }
 
   public static void main(String[] args)
