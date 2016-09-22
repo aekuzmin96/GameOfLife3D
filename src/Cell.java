@@ -37,7 +37,6 @@ public class Cell
     neighbors += getNeighborsHelper(x, y , z - 1);
     neighbors += getNeighborsHelper(x, y , z + 1);
 
-
     return neighbors;
   }
 
