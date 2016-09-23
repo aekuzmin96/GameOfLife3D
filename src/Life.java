@@ -109,13 +109,13 @@ public class Life extends Application implements EventHandler<ActionEvent>
   
   private void setUpHBox(HBox hbox)
   {
-    r1Text = new TextField(r1 + "");
+    r1Text = new TextField("8");
     r1Text.setPrefSize(40, 5);
-    r2Text = new TextField(r2 + "");
+    r2Text = new TextField("16");
     r2Text.setPrefSize(40, 5);
-    r3Text = new TextField(r3 + "");
+    r3Text = new TextField("18");
     r3Text.setPrefSize(40, 5);
-    r4Text = new TextField(r4 + "");
+    r4Text = new TextField("6");
     r4Text.setPrefSize(40, 5);
 
     pauseButton = new Button("Pause");
@@ -254,11 +254,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private void initializeGame()
   {
-    r1 = 8;
-    r2 = 16;
-    r3 = 18;
-    r4 = 6;
-  
     Random rand = new Random();
     
     for(int x = 1; x < 32; x++)
