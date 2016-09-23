@@ -34,7 +34,6 @@ public class Cell
 
   public void setAlive()
   {
-
     cellBox.setVisible(true);
     alive = true;
   }
