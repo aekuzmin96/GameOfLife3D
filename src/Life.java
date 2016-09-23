@@ -23,12 +23,12 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private Cell[][][] currentState = new Cell[32][32][32];
   private Cell[][][] nextState = new Cell[32][32][32];
-  final Group root = new Group();
-  final Xform cube = new Xform();
-  final Xform cameraXform = new Xform();
-  final Xform cameraXform2 = new Xform();
-  final Xform cameraXform3 = new Xform();
-  final PerspectiveCamera camera = new PerspectiveCamera(true);
+  private final Group root = new Group();
+  private final Xform cube = new Xform();
+  private final Xform cameraXform = new Xform();
+  private final Xform cameraXform2 = new Xform();
+  private final Xform cameraXform3 = new Xform();
+  private  PerspectiveCamera camera = new PerspectiveCamera(true);
   private Button pauseButton;
   private Button randomButton;
   private Button preset1;
@@ -36,14 +36,16 @@ public class Life extends Application implements EventHandler<ActionEvent>
   private Button preset3;
   private Button preset4;
   private Button preset5;
+  private Presets presets;
+  private TextField r1Text, r2Text, r3Text, r4Text;
+  private int r1, r2, r3, r4;
+  private RotateLoop loop;
 
   private static final double CAMERA_INITIAL_DISTANCE = -125;
   private static final double CAMERA_INITIAL_X_ANGLE = 20.0;
   private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
   private static final double CAMERA_NEAR_CLIP = 0.1;
   private static final double CAMERA_FAR_CLIP = 10000.0;
-  private int r1, r2, r3, r4;
-  private RotateLoop loop;
   
   private void buildCamera()
   {
@@ -81,6 +83,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
   public void start(Stage primaryStage)
   {
     BorderPane borderPane = new BorderPane();
+    presets = new Presets();
   
     Scene scene = new Scene(borderPane, 850, 650, true);
     primaryStage.setTitle("Game of Life in 3D");
@@ -106,13 +109,13 @@ public class Life extends Application implements EventHandler<ActionEvent>
   
   private void setUpHBox(HBox hbox)
   {
-    TextField r1Text = new TextField(r1 + "");
+    r1Text = new TextField(r1 + "");
     r1Text.setPrefSize(40, 5);
-    TextField r2Text = new TextField(r2 + "");
+    r2Text = new TextField(r2 + "");
     r2Text.setPrefSize(40, 5);
-    TextField r3Text = new TextField(r3 + "");
+    r3Text = new TextField(r3 + "");
     r3Text.setPrefSize(40, 5);
-    TextField r4Text = new TextField(r4 + "");
+    r4Text = new TextField(r4 + "");
     r4Text.setPrefSize(40, 5);
 
     pauseButton = new Button("Pause");
@@ -136,8 +139,8 @@ public class Life extends Application implements EventHandler<ActionEvent>
     hbox.getChildren().addAll(new Label("R4:"), r4Text);
     hbox.setPadding(new Insets(10));
     hbox.setSpacing(10);
-    hbox.getChildren().addAll(pauseButton, randomButton,
-            preset1, preset2, preset3, preset4, preset5);
+    hbox.getChildren().addAll(randomButton,
+            preset1, preset2, preset3, preset4, preset5, pauseButton);
   }
 
   @Override
@@ -156,27 +159,38 @@ public class Life extends Application implements EventHandler<ActionEvent>
     }
     if(source == randomButton)
     {
-      randomPreset();
+      presets.reset(currentState);
+      presets.randomPreset(currentState);
     }
     if(source == preset1)
     {
       System.out.println("Preset 1");
+      presets.reset(currentState);
+      presets.preset1(currentState);
     }
     if(source == preset2)
     {
       System.out.println("Preset 2");
+      presets.reset(currentState);
+      presets.preset2(currentState);
     }
     if(source == preset3)
     {
       System.out.println("Preset 3");
+      presets.reset(currentState);
+      presets.preset3(currentState);
     }
     if(source == preset4)
     {
       System.out.println("Preset 4");
+      presets.reset(currentState);
+      presets.preset4(currentState);
     }
     if(source == preset5)
     {
       System.out.println("Preset 5");
+      presets.reset(currentState);
+      presets.preset5(currentState);
     }
   }
 
@@ -194,10 +208,24 @@ public class Life extends Application implements EventHandler<ActionEvent>
       if(time - updateTime >= 1_000_000_000)
       {
         System.out.println(frame - lastFrame);
-        updateGame();
+        updateConditions();
+        //updateGame();
         updateTime = time;
         lastFrame = frame;
       }
+    }
+  }
+
+  private void updateConditions()
+  {
+    try{
+      r1 = Integer.parseInt(r1Text.getText());
+      r2 = Integer.parseInt(r2Text.getText());
+      r3 = Integer.parseInt(r3Text.getText());
+      r4 = Integer.parseInt(r4Text.getText());
+    }
+    catch(NumberFormatException e)
+    {
     }
   }
 
@@ -221,31 +249,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         }
       }
     }
-
     nextState = currentState;
-  }
-
-  private void randomPreset()
-  {
-    Random rand = new Random();
-
-    for(int x = 1; x < 32; x++)
-    {
-      for(int y = 1; y < 32; y++)
-      {
-        for(int z = 1; z < 32; z++)
-        {
-          int n = rand.nextInt(100);
-          if(n > 90)
-          {
-            System.out.println("random preset");
-            currentState[x][y][z].setAlive();
-          }
-          else
-            currentState[x][y][z].setDead();
-        }
-      }
-    }
   }
 
   private void initializeGame()

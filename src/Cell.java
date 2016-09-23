@@ -34,8 +34,9 @@ public class Cell
 
   public void setAlive()
   {
-    alive = true;
+
     cellBox.setVisible(true);
+    alive = true;
   }
 
   public void setDead()
@@ -43,8 +44,8 @@ public class Cell
     final PhongMaterial redMaterial = new PhongMaterial();
     redMaterial.setDiffuseColor(Color.RED);
     cellBox.setMaterial(redMaterial);
-    alive = false;
     cellBox.setVisible(false);
+    alive = false;
   }
   
   public boolean getAlive()
