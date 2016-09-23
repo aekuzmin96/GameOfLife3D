@@ -9,16 +9,14 @@ public class Cell
 {
 
   private boolean alive;
-  private Cell[][][] board;
   private int x, y, z;
   public Box cellBox;
 
-  public Cell(boolean alive, Cell[][][] board, int x, int y, int z)
+  public Cell(boolean alive, int x, int y, int z)
   {
     final PhongMaterial material = new PhongMaterial();
     material.setDiffuseColor(Color.GREEN);
     this.alive = alive;
-    this.board = board;
     this.x = x;
     this.y = y;
     this.z = z;
@@ -33,13 +31,16 @@ public class Cell
   public void setAlive()
   {
     alive = true;
-    cellBox.setVisible(true);
+    //cellBox.setVisible(true);
   }
 
   public void setDead()
   {
+   // final PhongMaterial redMaterial = new PhongMaterial();
+    //redMaterial.setDiffuseColor(Color.RED);
+    //cellBox.setMaterial(redMaterial);
     alive = false;
-    cellBox.setVisible(false);
+   // cellBox.setVisible(false);
   }
   
   public boolean getAlive()
@@ -47,7 +48,7 @@ public class Cell
     return alive;
   }
 
-  public int getNeighbors()
+  public int getNeighbors(Cell[][][] board)
   {
     int neighbors = 0;
 
@@ -70,7 +71,6 @@ public class Cell
         }
       }
     }
-
     return neighbors;
   }
 }
