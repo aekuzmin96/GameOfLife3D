@@ -194,7 +194,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       if(time - updateTime >= 1_000_000_000)
       {
         System.out.println(frame - lastFrame);
-        //updateGame();
+        updateGame();
         updateTime = time;
         lastFrame = frame;
       }
@@ -212,27 +212,17 @@ public class Life extends Application implements EventHandler<ActionEvent>
           int neighbors = currentState[x][y][z].getNeighbors(currentState);
           if((!currentState[x][y][z].getAlive()) && neighbors >= r1 && neighbors <= r2)
           {
-            nextState[x][y][z].cellBox.setVisible(true);
+            nextState[x][y][z].setAlive();
           }
           if(currentState[x][y][z].getAlive() && (neighbors > r3 || neighbors < r4))
           {
-            nextState[x][y][z].cellBox.setVisible(false);
+            nextState[x][y][z].setDead();
           }
         }
       }
     }
 
     nextState = currentState;
-    /*for(int x = 1; x < 32; x++)
-    {
-      for (int y = 1; y < 32; y++)
-      {
-        for (int z = 1; z < 32; z++)
-        {
-          nextState[x][y][z] = currentState[x][y][z];
-        }
-      }
-    }*/
   }
 
   private void randomPreset()
@@ -274,14 +264,14 @@ public class Life extends Application implements EventHandler<ActionEvent>
         for(int z = 1; z < 32; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 90)
+          if(n > 75)
           {
             currentState[x][y][z] = new Cell(true, x, y, z);
             nextState[x][y][z] = new Cell(true, x, y, z);
           }
           else
             currentState[x][y][z] = new Cell(false, x, y, z);
-            nextState[x][y][z] = new Cell(true, x, y, z);
+            nextState[x][y][z] = new Cell(false, x, y, z);
         }
       }
     }

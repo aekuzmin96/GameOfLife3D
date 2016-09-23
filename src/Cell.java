@@ -24,23 +24,27 @@ public class Cell
     cellBox.setMaterial(material);
     if(!alive)
     {
-      cellBox.setVisible(false);
+      setDead();
+    }
+    else
+    {
+      setAlive();
     }
   }
 
   public void setAlive()
   {
     alive = true;
-    //cellBox.setVisible(true);
+    cellBox.setVisible(true);
   }
 
   public void setDead()
   {
-   // final PhongMaterial redMaterial = new PhongMaterial();
-    //redMaterial.setDiffuseColor(Color.RED);
-    //cellBox.setMaterial(redMaterial);
+    final PhongMaterial redMaterial = new PhongMaterial();
+    redMaterial.setDiffuseColor(Color.RED);
+    cellBox.setMaterial(redMaterial);
     alive = false;
-   // cellBox.setVisible(false);
+    cellBox.setVisible(false);
   }
   
   public boolean getAlive()
