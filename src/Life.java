@@ -194,7 +194,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
     }
   }
 
-  class RotateLoop extends AnimationTimer
+  private class RotateLoop extends AnimationTimer
   {
     int frame = 0;
     long updateTime = 0;
