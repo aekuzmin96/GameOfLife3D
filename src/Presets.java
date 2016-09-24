@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Presets
 {
-  public void reset(Cell[][][] board, Cell[][][] boardTwo)
+  public void reset(Cell[][][] board, boolean[][][] boardTwo)
   {
     for(int x = 1; x < 32; x++)
     {
@@ -11,9 +11,8 @@ public class Presets
         for (int z = 1; z < 32; z++)
         {
           board[x][y][z].setDead();
-          boardTwo[x][y][z].setDead();
           board[x][y][z].cellBox.setVisible(false);
-          boardTwo[x][y][z].cellBox.setVisible(false);
+          boardTwo[x][y][z] = false;
         }
       }
     }
@@ -23,14 +22,14 @@ public class Presets
   {
     Random rand = new Random();
 
-    for(int x = 1; x < 32; x++)
+    for(int x = 1; x < 31; x++)
     {
-      for(int y = 1; y < 32; y++)
+      for(int y = 1; y < 31; y++)
       {
-        for(int z = 1; z < 32; z++)
+        for(int z = 1; z < 31; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 95)
+          if(n > 80)
           {
             board[x][y][z].setAlive();
             board[x][y][z].cellBox.setVisible(true);
@@ -60,9 +59,9 @@ public class Presets
 
   public void preset2(Cell[][][] board)
   {
-    for(int i = 1; i < 32; i++)
+    for(int i = 1; i < 31; i++)
     {
-      for(int j = 1; j < 32; j++)
+      for(int j = 1; j < 31; j++)
       {
         board[i][j][j].setAlive();
         board[i][j][j].cellBox.setVisible(true);
@@ -122,7 +121,7 @@ public class Presets
 
   public void preset5(Cell[][][] board)
   {
-    for(int i = 1; i < 32; i++)
+    for(int i = 1; i < 31; i++)
     {
       board[i][1][1].setAlive();
       board[i][1][1].cellBox.setVisible(true);

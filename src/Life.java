@@ -25,7 +25,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
 {
 
   private Cell[][][] currentState = new Cell[32][32][32];
-  private Cell[][][] nextState = new Cell[32][32][32];
+  private boolean[][][] nextState = new boolean[32][32][32];
   private final Group root = new Group();
   private final Xform cube = new Xform();
   private final Xform cameraXform = new Xform();
@@ -112,11 +112,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
   
   private void setUpHBox(HBox hbox)
   {
-    r1Text = new TextField("4");
+    r1Text = new TextField("8");
     r1Text.setPrefSize(40, 5);
-    r2Text = new TextField("4");
+    r2Text = new TextField("16");
     r2Text.setPrefSize(40, 5);
-    r3Text = new TextField("10");
+    r3Text = new TextField("20");
     r3Text.setPrefSize(40, 5);
     r4Text = new TextField("6");
     r4Text.setPrefSize(40, 5);
@@ -150,6 +150,8 @@ public class Life extends Application implements EventHandler<ActionEvent>
   public void handle(ActionEvent event)
   {
     Object source = event.getSource();
+    
+    
     if(source == pauseButton && pauseButton.getText().equals("Pause"))
     {
       pauseButton.setText("Start");
@@ -229,8 +231,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private void updateGame()
   {
-    nextState = currentState;
-    
     for(int x = 1; x < 31; x++)
     {
       for (int y = 1; y < 31; y++)
@@ -238,13 +238,40 @@ public class Life extends Application implements EventHandler<ActionEvent>
         for (int z = 1; z < 31; z++)
         {
           int neighbors = currentState[x][y][z].getNeighbors(currentState);
-          if(currentState[x][y][z].getAlive() && (neighbors > r3 || neighbors < r4))
+          boolean status = currentState[x][y][z].getStatus();
+          if (status && (neighbors > r3 || neighbors < r4))
           {
-            nextState[x][y][z].setDead();
+            nextState[x][y][z] = false;
           }
-          else if((!currentState[x][y][z].getAlive()) && (neighbors >= r1 && neighbors <= r2))
+          else if (!status && (neighbors >= r1 && neighbors <= r2))
           {
-            nextState[x][y][z].setAlive();
+            nextState[x][y][z] = true;
+          }
+          else
+          {
+            nextState[x][y][z] = status;
+          }
+        }
+      }
+    }
+  
+    for(int x = 1; x < 31; x++)
+    {
+      for (int y = 1; y < 31; y++)
+      {
+        for (int z = 1; z < 31; z++)
+        {
+          boolean status = nextState[x][y][z];
+          if(currentState[x][y][z].getStatus() != status)
+          {
+            if(status)
+            {
+              currentState[x][y][z].setAlive();
+            }
+            else
+            {
+              currentState[x][y][z].setDead();
+            }
           }
         }
       }
@@ -262,12 +289,15 @@ public class Life extends Application implements EventHandler<ActionEvent>
         for(int z = 1; z < 32; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 75)
+          if(n > 85)
           {
             currentState[x][y][z] = new Cell(true, x, y, z);
           }
           else
+          {
             currentState[x][y][z] = new Cell(false, x, y, z);
+          }
+          nextState[x][y][z] = false;
         }
       }
     }

@@ -24,15 +24,10 @@ public class Cell
     this.z = z;
     cellBox = new Box(1, 1, 1);
     cellBox.setMaterial(material);
+    setStatus(alive);
     if(!alive)
     {
       setDead();
-      cellBox.setVisible(false);
-    }
-    else
-    {
-      setAlive();
-      cellBox.setVisible(true);
     }
   }
 
@@ -41,7 +36,7 @@ public class Cell
     final PhongMaterial blueMaterial = new PhongMaterial();
     blueMaterial.setDiffuseColor(Color.BLUE);
     cellBox.setMaterial(blueMaterial);
-    ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
+    ScaleTransition st = new ScaleTransition(Duration.millis(1000), cellBox);
     st.setToX(1);
     st.setToY(1);
     st.setToZ(1);
@@ -54,7 +49,7 @@ public class Cell
     final PhongMaterial redMaterial = new PhongMaterial();
     redMaterial.setDiffuseColor(Color.RED);
     cellBox.setMaterial(redMaterial);
-    ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
+    ScaleTransition st = new ScaleTransition(Duration.millis(1000), cellBox);
     st.setToX(0);
     st.setToY(0);
     st.setToZ(0);
@@ -62,9 +57,14 @@ public class Cell
     alive = false;
   }
   
-  public boolean getAlive()
+  public boolean getStatus()
   {
     return alive;
+  }
+  
+  public void setStatus(boolean status)
+  {
+    alive = status;
   }
 
   public int getNeighbors(Cell[][][] board)
@@ -81,7 +81,7 @@ public class Cell
           {
             if(xx > 0 && yy > 0 && zz > 0 && xx < 31 && yy < 31 && zz < 31)
             {
-              if (board[xx][yy][zz].getAlive())
+              if (board[xx][yy][zz].getStatus())
               {
                 neighbors++;
               }
