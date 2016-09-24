@@ -289,7 +289,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         for(int z = 1; z < 32; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 85)
+          if(n > 80)
           {
             currentState[x][y][z] = new Cell(true, x, y, z);
           }
@@ -297,7 +297,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
           {
             currentState[x][y][z] = new Cell(false, x, y, z);
           }
-          nextState[x][y][z] = false;
         }
       }
     }

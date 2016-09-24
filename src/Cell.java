@@ -28,6 +28,7 @@ public class Cell
     if(!alive)
     {
       setDead();
+      cellBox.setVisible(false);
     }
   }
 
@@ -36,7 +37,7 @@ public class Cell
     final PhongMaterial blueMaterial = new PhongMaterial();
     blueMaterial.setDiffuseColor(Color.BLUE);
     cellBox.setMaterial(blueMaterial);
-    ScaleTransition st = new ScaleTransition(Duration.millis(1000), cellBox);
+    ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
     st.setToX(1);
     st.setToY(1);
     st.setToZ(1);
@@ -49,7 +50,7 @@ public class Cell
     final PhongMaterial redMaterial = new PhongMaterial();
     redMaterial.setDiffuseColor(Color.RED);
     cellBox.setMaterial(redMaterial);
-    ScaleTransition st = new ScaleTransition(Duration.millis(1000), cellBox);
+    ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
     st.setToX(0);
     st.setToY(0);
     st.setToZ(0);
