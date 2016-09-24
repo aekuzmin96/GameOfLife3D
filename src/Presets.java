@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Presets
 {
-  public void reset(Cell[][][] board)
+  public void reset(Cell[][][] board, Cell[][][] boardTwo)
   {
     for(int x = 1; x < 32; x++)
     {
@@ -11,6 +11,9 @@ public class Presets
         for (int z = 1; z < 32; z++)
         {
           board[x][y][z].setDead();
+          boardTwo[x][y][z].setDead();
+          board[x][y][z].cellBox.setVisible(false);
+          boardTwo[x][y][z].cellBox.setVisible(false);
         }
       }
     }
@@ -27,9 +30,10 @@ public class Presets
         for(int z = 1; z < 32; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 75)
+          if(n > 95)
           {
             board[x][y][z].setAlive();
+            board[x][y][z].cellBox.setVisible(true);
           }
         }
       }
@@ -38,11 +42,19 @@ public class Presets
 
   public void preset1(Cell[][][] board)
   {
-    for(int i = 1; i < 32; i++)
+    for(int x = 1; x < 31; x++)
     {
-      board[i][15][15].setAlive();
-      board[15][i][15].setAlive();
-      board[15][15][i].setAlive();
+      for(int y = 1; y < 31; y++)
+      {
+        for(int z = 1; z < 31; z++)
+        {
+          if((x % 2 == 0) && (y % 2 == 0) && (z % 2 == 0))
+          {
+            board[x][y][z].setAlive();
+            board[x][y][z].cellBox.setVisible(true);
+          }
+        }
+      }
     }
   }
 
@@ -53,8 +65,11 @@ public class Presets
       for(int j = 1; j < 32; j++)
       {
         board[i][j][j].setAlive();
+        board[i][j][j].cellBox.setVisible(true);
         board[j][j][i].setAlive();
+        board[j][j][i].cellBox.setVisible(true);
         board[j][i][j].setAlive();
+        board[j][i][j].cellBox.setVisible(true);
       }
     }
   }
@@ -70,9 +85,13 @@ public class Presets
           for(int l = 0; l < 4; l++)
           {
             board[j][i + l][k].setAlive();
+            board[j][i + l][k].cellBox.setVisible(true);
             board[j + 1][i + l][k].setAlive();
+            board[j + 1][i + l][k].cellBox.setVisible(true);
             board[j + 2][i + l][k].setAlive();
+            board[j + 2][i + 1][k].cellBox.setVisible(true);
             board[j + 3][i + l][k].setAlive();
+            board[j + 3][i + 1][k].cellBox.setVisible(true);
           }
         }
       }
@@ -90,8 +109,11 @@ public class Presets
           for(int i = 0; i < 5; i++)
           {
             board[x][y + i][z + i].setAlive();
+            board[x][y + i][z + 1].cellBox.setVisible(true);
             board[x + i][y][z + i].setAlive();
+            board[x + i][y][z + i].cellBox.setVisible(true);
             board[x + i][y + i][z].setAlive();
+            board[x + i][y + i][z].cellBox.setVisible(true);
           }
         }
       }
@@ -103,17 +125,29 @@ public class Presets
     for(int i = 1; i < 32; i++)
     {
       board[i][1][1].setAlive();
+      board[i][1][1].cellBox.setVisible(true);
       board[1][i][1].setAlive();
+      board[1][i][1].cellBox.setVisible(true);
       board[1][1][i].setAlive();
+      board[1][1][i].cellBox.setVisible(true);
       board[i][30][30].setAlive();
+      board[i][30][30].cellBox.setVisible(true);
       board[30][i][30].setAlive();
+      board[30][i][30].cellBox.setVisible(true);
       board[30][30][i].setAlive();
+      board[30][30][i].cellBox.setVisible(true);
       board[1][i][i].setAlive();
+      board[1][i][i].cellBox.setVisible(true);
       board[i][1][i].setAlive();
+      board[i][1][i].cellBox.setVisible(true);
       board[i][i][1].setAlive();
+      board[i][i][1].cellBox.setVisible(true);
       board[30][i][i].setAlive();
+      board[30][i][i].cellBox.setVisible(true);
       board[i][30][i].setAlive();
+      board[i][30][i].cellBox.setVisible(true);
       board[i][i][30].setAlive();
+      board[i][i][30].cellBox.setVisible(true);
     }
   }
 }

@@ -1,6 +1,8 @@
+import javafx.animation.ScaleTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.util.Duration;
 
 /**
  * Created by Anton on 9/21/2016.
@@ -25,10 +27,12 @@ public class Cell
     if(!alive)
     {
       setDead();
+      cellBox.setVisible(false);
     }
     else
     {
       setAlive();
+      cellBox.setVisible(true);
     }
   }
 
@@ -37,7 +41,11 @@ public class Cell
     final PhongMaterial blueMaterial = new PhongMaterial();
     blueMaterial.setDiffuseColor(Color.BLUE);
     cellBox.setMaterial(blueMaterial);
-    cellBox.setVisible(true);
+    ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
+    st.setToX(1);
+    st.setToY(1);
+    st.setToZ(1);
+    st.play();
     alive = true;
   }
 
@@ -46,7 +54,11 @@ public class Cell
     final PhongMaterial redMaterial = new PhongMaterial();
     redMaterial.setDiffuseColor(Color.RED);
     cellBox.setMaterial(redMaterial);
-    cellBox.setVisible(false);
+    ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
+    st.setToX(0);
+    st.setToY(0);
+    st.setToZ(0);
+    st.play();
     alive = false;
   }
   

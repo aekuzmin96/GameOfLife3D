@@ -3,6 +3,7 @@
  */
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,7 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -28,7 +31,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
   private final Xform cameraXform = new Xform();
   private final Xform cameraXform2 = new Xform();
   private final Xform cameraXform3 = new Xform();
-  private  PerspectiveCamera camera = new PerspectiveCamera(true);
+  private PerspectiveCamera camera = new PerspectiveCamera(true);
   private Button pauseButton;
   private Button randomButton;
   private Button preset1;
@@ -109,11 +112,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
   
   private void setUpHBox(HBox hbox)
   {
-    r1Text = new TextField("8");
+    r1Text = new TextField("4");
     r1Text.setPrefSize(40, 5);
-    r2Text = new TextField("16");
+    r2Text = new TextField("4");
     r2Text.setPrefSize(40, 5);
-    r3Text = new TextField("18");
+    r3Text = new TextField("10");
     r3Text.setPrefSize(40, 5);
     r4Text = new TextField("6");
     r4Text.setPrefSize(40, 5);
@@ -159,37 +162,32 @@ public class Life extends Application implements EventHandler<ActionEvent>
     }
     if(source == randomButton)
     {
-      presets.reset(currentState);
+      presets.reset(currentState, nextState);
       presets.randomPreset(currentState);
     }
     if(source == preset1)
     {
-      System.out.println("Preset 1");
-      presets.reset(currentState);
+      presets.reset(currentState, nextState);
       presets.preset1(currentState);
     }
     if(source == preset2)
     {
-      System.out.println("Preset 2");
-      presets.reset(currentState);
+      presets.reset(currentState, nextState);
       presets.preset2(currentState);
     }
     if(source == preset3)
     {
-      System.out.println("Preset 3");
-      presets.reset(currentState);
+      presets.reset(currentState, nextState);
       presets.preset3(currentState);
     }
     if(source == preset4)
     {
-      System.out.println("Preset 4");
-      presets.reset(currentState);
+      presets.reset(currentState, nextState);
       presets.preset4(currentState);
     }
     if(source == preset5)
     {
-      System.out.println("Preset 5");
-      presets.reset(currentState);
+      presets.reset(currentState, nextState);
       presets.preset5(currentState);
     }
   }
@@ -231,6 +229,8 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private void updateGame()
   {
+    nextState = currentState;
+    
     for(int x = 1; x < 31; x++)
     {
       for (int y = 1; y < 31; y++)
@@ -242,14 +242,13 @@ public class Life extends Application implements EventHandler<ActionEvent>
           {
             nextState[x][y][z].setDead();
           }
-          else if((!currentState[x][y][z].getAlive()) && neighbors >= r1 && neighbors <= r2)
+          else if((!currentState[x][y][z].getAlive()) && (neighbors >= r1 && neighbors <= r2))
           {
             nextState[x][y][z].setAlive();
           }
         }
       }
     }
-    nextState = currentState;
   }
 
   private void initializeGame()
@@ -266,11 +265,9 @@ public class Life extends Application implements EventHandler<ActionEvent>
           if(n > 75)
           {
             currentState[x][y][z] = new Cell(true, x, y, z);
-            nextState[x][y][z] = new Cell(true, x, y, z);
           }
           else
             currentState[x][y][z] = new Cell(false, x, y, z);
-            nextState[x][y][z] = new Cell(false, x, y, z);
         }
       }
     }
