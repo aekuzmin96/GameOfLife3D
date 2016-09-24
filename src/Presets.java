@@ -27,7 +27,7 @@ public class Presets
         for(int z = 1; z < 32; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 70)
+          if(n > 75)
           {
             board[x][y][z].setAlive();
           }
@@ -61,6 +61,45 @@ public class Presets
 
   public void preset3(Cell[][][] board)
   {
+    for(int i = 1; i < 28; i+= 5)
+    {
+      for(int j = 1; j < 28; j += 5)
+      {
+        for(int k = 1; k < 28; k+= 5)
+        {
+          for(int l = 0; l < 4; l++)
+          {
+            board[j][i + l][k].setAlive();
+            board[j + 1][i + l][k].setAlive();
+            board[j + 2][i + l][k].setAlive();
+            board[j + 3][i + l][k].setAlive();
+          }
+        }
+      }
+    }
+  }
+
+  public void preset4(Cell[][][] board)
+  {
+    for(int x = 1; x < 31; x += 10)
+    {
+      for (int y = 1; y < 31; y += 10)
+      {
+        for (int z = 1; z < 31; z += 10)
+        {
+          for(int i = 0; i < 5; i++)
+          {
+            board[x][y + i][z + i].setAlive();
+            board[x + i][y][z + i].setAlive();
+            board[x + i][y + i][z].setAlive();
+          }
+        }
+      }
+    }
+  }
+
+  public void preset5(Cell[][][] board)
+  {
     for(int i = 1; i < 32; i++)
     {
       board[i][1][1].setAlive();
@@ -76,29 +115,5 @@ public class Presets
       board[i][30][i].setAlive();
       board[i][i][30].setAlive();
     }
-  }
-
-  public void preset4(Cell[][][] board)
-  {
-    for(int x = 1; x < 29; x+=10)
-    {
-      for (int y = 1; y < 29; y+=10)
-      {
-        for (int z = 1; z < 29; z+=10)
-        {
-          for(int i = 0; i < 5; i++)
-          {
-            board[x ][y + i][z + i].setAlive();
-            board[x + i][y ][z + i].setAlive();
-            board[x + i][y + i][z].setAlive();
-          }
-        }
-      }
-    }
-  }
-
-  public void preset5(Cell[][][] board)
-  {
-
   }
 }

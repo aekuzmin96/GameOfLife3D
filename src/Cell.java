@@ -15,7 +15,7 @@ public class Cell
   public Cell(boolean alive, int x, int y, int z)
   {
     final PhongMaterial material = new PhongMaterial();
-    material.setDiffuseColor(Color.GREEN);
+    material.setDiffuseColor(Color.BLUE);
     this.alive = alive;
     this.x = x;
     this.y = y;
@@ -34,6 +34,9 @@ public class Cell
 
   public void setAlive()
   {
+    final PhongMaterial blueMaterial = new PhongMaterial();
+    blueMaterial.setDiffuseColor(Color.BLUE);
+    cellBox.setMaterial(blueMaterial);
     cellBox.setVisible(true);
     alive = true;
   }

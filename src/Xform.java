@@ -36,7 +36,6 @@ public class Xform extends Group
     super();
     getTransforms().addAll(t, rz, ry, rx, s);
   }
-
   
   public void setRotateZ(double z)
   {

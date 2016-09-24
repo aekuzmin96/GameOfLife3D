@@ -209,7 +209,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       {
         System.out.println(frame - lastFrame);
         updateConditions();
-        //updateGame();
+        updateGame();
         updateTime = time;
         lastFrame = frame;
       }
@@ -231,20 +231,20 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private void updateGame()
   {
-    for(int x = 1; x < 32; x++)
+    for(int x = 1; x < 31; x++)
     {
-      for (int y = 1; y < 32; y++)
+      for (int y = 1; y < 31; y++)
       {
-        for (int z = 1; z < 32; z++)
+        for (int z = 1; z < 31; z++)
         {
           int neighbors = currentState[x][y][z].getNeighbors(currentState);
-          if((!currentState[x][y][z].getAlive()) && neighbors >= r1 && neighbors <= r2)
-          {
-            nextState[x][y][z].setAlive();
-          }
           if(currentState[x][y][z].getAlive() && (neighbors > r3 || neighbors < r4))
           {
             nextState[x][y][z].setDead();
+          }
+          else if((!currentState[x][y][z].getAlive()) && neighbors >= r1 && neighbors <= r2)
+          {
+            nextState[x][y][z].setAlive();
           }
         }
       }
