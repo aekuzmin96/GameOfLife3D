@@ -99,22 +99,16 @@ public class Presets
 
   public void preset4(Cell[][][] board)
   {
-    for(int x = 1; x < 31; x += 10)
+    for(int i = 1; i < 31; i ++)
     {
-      for (int y = 1; y < 31; y += 10)
+      for (int j = 1; j < 31; j ++)
       {
-        for (int z = 1; z < 31; z += 10)
-        {
-          for(int i = 0; i < 5; i++)
-          {
-            board[x][y + i][z + i].setAlive();
-            board[x][y + i][z + 1].cellBox.setVisible(true);
-            board[x + i][y][z + i].setAlive();
-            board[x + i][y][z + i].cellBox.setVisible(true);
-            board[x + i][y + i][z].setAlive();
-            board[x + i][y + i][z].cellBox.setVisible(true);
-          }
-        }
+        board[15][i][j].setAlive();
+        board[15][i][j].cellBox.setVisible(true);
+        board[i][15][j].setAlive();
+        board[i][15][j].cellBox.setVisible(true);
+        board[i][j][15].setAlive();
+        board[i][j][15].cellBox.setVisible(true);
       }
     }
   }

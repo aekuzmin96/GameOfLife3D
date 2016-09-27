@@ -21,15 +21,13 @@ public class Zoom extends Scene implements EventHandler<KeyEvent>
   @Override
   public void handle(KeyEvent e)
   {
-    if(e.getCode() == KeyCode.SHIFT)
+    if(e.getCode() == KeyCode.X)
     {
-      cameraDistance -= 2;
-      System.out.println(cameraDistance);
+      cameraDistance -= 1;
     }
-    if(e.getCode() == KeyCode.ENTER)
+    if(e.getCode() == KeyCode.C)
     {
-      cameraDistance += 2;
-      System.out.println(cameraDistance);
+      cameraDistance += 1;
     }
   }
   

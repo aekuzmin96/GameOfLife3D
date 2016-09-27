@@ -88,8 +88,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
     scene = new Zoom(borderPane, CAMERA_INITIAL_DISTANCE);
     primaryStage.setTitle("Game of Life in 3D");
     primaryStage.setScene(scene);
-    
-    System.out.println(scene.getCameraDistance());
   
     SubScene subScene = new SubScene(root, 850, 600, true, SceneAntialiasing.BALANCED);
     subScene.setFill(Color.GRAY);
@@ -133,6 +131,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
     preset4.setOnAction(this);
     preset5 = new Button("Preset 5");
     preset5.setOnAction(this);
+  
+    r1Text.setDisable(true);
+    r2Text.setDisable(true);
+    r3Text.setDisable(true);
+    r4Text.setDisable(true);
 
     hbox.getChildren().addAll(new Label("R1:"), r1Text);
     hbox.getChildren().addAll(new Label("R2:"), r2Text);
@@ -152,11 +155,19 @@ public class Life extends Application implements EventHandler<ActionEvent>
     if(source == pauseButton && pauseButton.getText().equals("Pause"))
     {
       pauseButton.setText("Start");
+      r1Text.setDisable(false);
+      r2Text.setDisable(false);
+      r3Text.setDisable(false);
+      r4Text.setDisable(false);
       loop.stop();
     }
     else if(source == pauseButton && pauseButton.getText().equals("Start"))
     {
       pauseButton.setText("Pause");
+      r1Text.setDisable(true);
+      r2Text.setDisable(true);
+      r3Text.setDisable(true);
+      r4Text.setDisable(true);
       loop.start();
     }
     if(source == randomButton)
@@ -300,26 +311,17 @@ public class Life extends Application implements EventHandler<ActionEvent>
 
   private void initializeGame()
   {
-    Random rand = new Random();
-    
     for(int x = 1; x < 32; x++)
     {
       for(int y = 1; y < 32; y++)
       {
         for(int z = 1; z < 32; z++)
         {
-          int n = rand.nextInt(100);
-          if(n > 85)
-          {
-            currentState[x][y][z] = new Cell(true, x, y, z);
-          }
-          else
-          {
-            currentState[x][y][z] = new Cell(false, x, y, z);
-          }
+          currentState[x][y][z] = new Cell(false, x, y, z);
         }
       }
     }
+    presets.randomPreset(currentState);
   }
 
   public static void main(String[] args)

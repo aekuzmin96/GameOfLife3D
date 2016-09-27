@@ -24,10 +24,10 @@ public class Cell
     this.z = z;
     cellBox = new Box(1, 1, 1);
     cellBox.setMaterial(material);
-    setStatus(alive);
     if(!alive)
     {
       cellBox.setVisible(false);
+      setDead();
     }
   }
 
@@ -61,11 +61,6 @@ public class Cell
   public boolean getStatus()
   {
     return alive;
-  }
-  
-  public void setStatus(boolean status)
-  {
-    alive = status;
   }
 
   public int getNeighbors(Cell[][][] board)
