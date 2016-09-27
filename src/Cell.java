@@ -27,13 +27,13 @@ public class Cell
     setStatus(alive);
     if(!alive)
     {
-      setDead();
       cellBox.setVisible(false);
     }
   }
 
   public void setAlive()
   {
+    cellBox.setVisible(true);
     final PhongMaterial blueMaterial = new PhongMaterial();
     blueMaterial.setDiffuseColor(Color.BLUE);
     cellBox.setMaterial(blueMaterial);

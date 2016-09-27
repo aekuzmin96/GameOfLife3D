@@ -3,7 +3,6 @@
  */
 
 import javafx.animation.AnimationTimer;
-import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,10 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
 import java.util.Random;
 
 public class Life extends Application implements EventHandler<ActionEvent>
@@ -43,7 +39,8 @@ public class Life extends Application implements EventHandler<ActionEvent>
   private TextField r1Text, r2Text, r3Text, r4Text;
   private int r1, r2, r3, r4;
   private RotateLoop loop;
-
+  private Zoom scene;
+  
   private static final double CAMERA_INITIAL_DISTANCE = -125;
   private static final double CAMERA_INITIAL_X_ANGLE = 20.0;
   private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
@@ -87,11 +84,12 @@ public class Life extends Application implements EventHandler<ActionEvent>
   {
     BorderPane borderPane = new BorderPane();
     presets = new Presets();
-  
-    Scene scene = new Scene(borderPane, 850, 650, true);
+    
+    scene = new Zoom(borderPane, CAMERA_INITIAL_DISTANCE);
     primaryStage.setTitle("Game of Life in 3D");
-    scene.setFill(Color.BLUE);
     primaryStage.setScene(scene);
+    
+    System.out.println(scene.getCameraDistance());
   
     SubScene subScene = new SubScene(root, 850, 600, true, SceneAntialiasing.BALANCED);
     subScene.setFill(Color.GRAY);
@@ -151,7 +149,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
   {
     Object source = event.getSource();
     
-    
     if(source == pauseButton && pauseButton.getText().equals("Pause"))
     {
       pauseButton.setText("Start");
@@ -205,6 +202,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       frame ++;
       cube.ry.setAngle(cameraXform.ry.getAngle() - (0.5 * frame));
       cube.rx.setAngle(cameraXform.rx.getAngle() - (0.5 * frame));
+      camera.setTranslateZ(scene.getCameraDistance());
       if(time - updateTime >= 1_000_000_000)
       {
         System.out.println(frame - lastFrame);
@@ -212,6 +210,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
         updateGame();
         updateTime = time;
         lastFrame = frame;
+      }
+      
+      if(time - updateTime >= 900_000_000)
+      {
+        clearBoard();
       }
     }
   }
@@ -277,6 +280,23 @@ public class Life extends Application implements EventHandler<ActionEvent>
       }
     }
   }
+  
+  private void clearBoard()
+  {
+    for(int x = 1; x < 31; x++)
+    {
+      for(int y = 1; y < 31; y++)
+      {
+        for(int z = 1; z < 31; z++)
+        {
+          if(!currentState[x][y][z].getStatus())
+          {
+            currentState[x][y][z].cellBox.setVisible(false);
+          }
+        }
+      }
+    }
+  }
 
   private void initializeGame()
   {
@@ -289,7 +309,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         for(int z = 1; z < 32; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 80)
+          if(n > 85)
           {
             currentState[x][y][z] = new Cell(true, x, y, z);
           }

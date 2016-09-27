@@ -29,7 +29,7 @@ public class Presets
         for(int z = 1; z < 31; z++)
         {
           int n = rand.nextInt(100);
-          if(n > 80)
+          if(n > 85)
           {
             board[x][y][z].setAlive();
             board[x][y][z].cellBox.setVisible(true);
