@@ -118,11 +118,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
   
   private void setUpHBox(HBox hbox)
   {
-    r1Text = new TextField("8");
+    r1Text = new TextField("7");
     r1Text.setPrefSize(40, 5);
-    r2Text = new TextField("16");
+    r2Text = new TextField("8");
     r2Text.setPrefSize(40, 5);
-    r3Text = new TextField("20");
+    r3Text = new TextField("10");
     r3Text.setPrefSize(40, 5);
     r4Text = new TextField("6");
     r4Text.setPrefSize(40, 5);
@@ -184,6 +184,10 @@ public class Life extends Application implements EventHandler<ActionEvent>
     {
       presets.reset(currentState, nextState, blueMaterial);
       presets.randomPreset(currentState);
+      r1Text.setText("7");
+      r2Text.setText("8");
+      r3Text.setText("10");
+      r4Text.setText("6");
     }
     if(source == preset1)
     {
@@ -198,25 +202,37 @@ public class Life extends Application implements EventHandler<ActionEvent>
     {
       presets.reset(currentState, nextState, blueMaterial);
       presets.preset2(currentState);
+      r1Text.setText("8");
+      r2Text.setText("10");
+      r3Text.setText("13");
+      r4Text.setText("6");
     }
     if(source == preset3)
     {
       presets.reset(currentState, nextState, blueMaterial);
       presets.preset3(currentState);
+      r1Text.setText("3");
+      r2Text.setText("3");
+      r3Text.setText("4");
+      r4Text.setText("4");
     }
     if(source == preset4)
     {
       presets.reset(currentState, nextState, blueMaterial);
       presets.preset4(currentState);
+      r1Text.setText("6");
+      r2Text.setText("6");
+      r3Text.setText("5");
+      r4Text.setText("3");
     }
     if(source == preset5)
     {
       presets.reset(currentState, nextState, blueMaterial);
       presets.preset5(currentState);
-      r1Text.setText("4");
-      r2Text.setText("5");
-      r3Text.setText("7");
-      r4Text.setText("6");
+      r1Text.setText("1");
+      r2Text.setText("1");
+      r3Text.setText("1");
+      r4Text.setText("1");
     }
   }
 
@@ -238,7 +254,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
       if(time - updateTime >= 1_000_000_000)
       {
         System.out.println("FPS: " + (frame - lastFrame));
-        resetCellColors();
         updateConditions();
         updateGame();
         updateTime = time;
@@ -338,26 +353,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
       }
     }
   }
-  
-  private void resetCellColors()
-  {
-    int aliveCells = 0;
-    for(int x = 1; x < 31; x++)
-    {
-      for (int y = 1; y < 31; y++)
-      {
-        for (int z = 1; z < 31; z++)
-        {
-          currentState[x][y][z].cellBox.setMaterial(blueMaterial);
-          if(currentState[x][y][z].getStatus())
-          {
-            aliveCells++;
-          }
-        }
-      }
-    }
-    System.out.println("Alive Cells: " + aliveCells);
-  }
 
   private void updateConditions()
   {
@@ -431,9 +426,9 @@ public class Life extends Application implements EventHandler<ActionEvent>
       {
         for(int z = 1; z < 31; z++)
         {
+          currentState[x][y][z].cellBox.setMaterial(blueMaterial);
           if(!currentState[x][y][z].getStatus())
           {
-            currentState[x][y][z].cellBox.setMaterial(blueMaterial);
             currentState[x][y][z].cellBox.setVisible(false);
           }
         }

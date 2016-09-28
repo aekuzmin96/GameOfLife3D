@@ -73,11 +73,11 @@ public class Presets
 
   public void preset3(Cell[][][] board)
   {
-    for(int i = 1; i < 28; i+= 5)
+    for(int i = 3; i < 28; i+= 5)
     {
-      for(int j = 1; j < 28; j += 5)
+      for(int j = 3; j < 28; j += 5)
       {
-        for(int k = 1; k < 28; k+= 5)
+        for(int k = 3; k < 28; k+= 5)
         {
           for(int l = 0; l < 4; l++)
           {
