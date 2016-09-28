@@ -1,8 +1,10 @@
+import javafx.scene.paint.PhongMaterial;
+
 import java.util.Random;
 
 public class Presets
 {
-  public void reset(Cell[][][] board, boolean[][][] boardTwo)
+  public void reset(Cell[][][] board, boolean[][][] boardTwo, PhongMaterial blueMaterial)
   {
     for(int x = 1; x < 32; x++)
     {
@@ -12,6 +14,7 @@ public class Presets
         {
           board[x][y][z].setDead();
           board[x][y][z].cellBox.setVisible(false);
+          board[x][y][z].cellBox.setMaterial(blueMaterial);
           boardTwo[x][y][z] = false;
         }
       }

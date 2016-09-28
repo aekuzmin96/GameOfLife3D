@@ -14,16 +14,14 @@ public class Cell
   private int x, y, z;
   public Box cellBox;
 
-  public Cell(boolean alive, int x, int y, int z)
+  public Cell(boolean alive, int x, int y, int z, PhongMaterial blueMaterial)
   {
-    final PhongMaterial material = new PhongMaterial();
-    material.setDiffuseColor(Color.BLUE);
     this.alive = alive;
     this.x = x;
     this.y = y;
     this.z = z;
     cellBox = new Box(1, 1, 1);
-    cellBox.setMaterial(material);
+    cellBox.setMaterial(blueMaterial);
     if(!alive)
     {
       cellBox.setVisible(false);
@@ -34,22 +32,16 @@ public class Cell
   public void setAlive()
   {
     cellBox.setVisible(true);
-    final PhongMaterial blueMaterial = new PhongMaterial();
-    blueMaterial.setDiffuseColor(Color.BLUE);
-    cellBox.setMaterial(blueMaterial);
     ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
-    st.setToX(1);
-    st.setToY(1);
-    st.setToZ(1);
+    st.setToX(0.85);
+    st.setToY(0.85);
+    st.setToZ(0.85);
     st.play();
     alive = true;
   }
 
   public void setDead()
   {
-    final PhongMaterial redMaterial = new PhongMaterial();
-    redMaterial.setDiffuseColor(Color.RED);
-    cellBox.setMaterial(redMaterial);
     ScaleTransition st = new ScaleTransition(Duration.millis(900), cellBox);
     st.setToX(0);
     st.setToY(0);

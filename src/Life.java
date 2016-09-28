@@ -14,12 +14,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.stage.Stage;
-import java.util.Random;
+
+import java.util.ArrayList;
 
 public class Life extends Application implements EventHandler<ActionEvent>
 {
-
   private Cell[][][] currentState = new Cell[32][32][32];
   private boolean[][][] nextState = new boolean[32][32][32];
   private final Group root = new Group();
@@ -40,6 +41,10 @@ public class Life extends Application implements EventHandler<ActionEvent>
   private int r1, r2, r3, r4;
   private RotateLoop loop;
   private Zoom scene;
+  private PhongMaterial blueMaterial;
+  private PhongMaterial redMaterial;
+  private ArrayList<Cell> toLife;
+  private ArrayList<Cell> toDeath;
   
   private static final double CAMERA_INITIAL_DISTANCE = -125;
   private static final double CAMERA_INITIAL_X_ANGLE = 20.0;
@@ -62,14 +67,15 @@ public class Life extends Application implements EventHandler<ActionEvent>
     cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
   }
   
-  private void buildCube()
+  private void buildCubeAndInitializeGame()
   {
-    for(int x = 1; x < 31; x++)
+    for(int x = 1; x < 32; x++)
     {
-      for(int y = 1; y < 31; y++)
+      for(int y = 1; y < 32; y++)
       {
-        for(int z = 1; z < 31; z++)
+        for(int z = 1; z < 32; z++)
         {
+          currentState[x][y][z] = new Cell(false, x, y, z, blueMaterial);
           currentState[x][y][z].cellBox.setTranslateX(x - 15);
           currentState[x][y][z].cellBox.setTranslateY(y - 15);
           currentState[x][y][z].cellBox.setTranslateZ(z - 15);
@@ -77,6 +83,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         }
       }
     }
+    presets.randomPreset(currentState);
   }
 
   @Override
@@ -93,13 +100,19 @@ public class Life extends Application implements EventHandler<ActionEvent>
     subScene.setFill(Color.GRAY);
     subScene.setCamera(camera);
     
+    blueMaterial = new PhongMaterial();
+    blueMaterial.setDiffuseColor(Color.BLUE);
+    redMaterial = new PhongMaterial();
+    redMaterial.setDiffuseColor(Color.RED);
+    toLife = new ArrayList<>();
+    toDeath = new ArrayList<>();
+    
     HBox hbox = new HBox();
     borderPane.setTop(hbox);
     borderPane.setCenter(subScene);
     root.getChildren().add(cube);
     buildCamera();
-    initializeGame();
-    buildCube();
+    buildCubeAndInitializeGame();
     setUpHBox(hbox);
     primaryStage.show();
     loop = new RotateLoop();
@@ -172,33 +185,41 @@ public class Life extends Application implements EventHandler<ActionEvent>
     }
     if(source == randomButton)
     {
-      presets.reset(currentState, nextState);
+      presets.reset(currentState, nextState, blueMaterial);
       presets.randomPreset(currentState);
     }
     if(source == preset1)
     {
-      presets.reset(currentState, nextState);
+      presets.reset(currentState, nextState, blueMaterial);
       presets.preset1(currentState);
+      r1Text.setText("8");
+      r2Text.setText("16");
+      r3Text.setText("18");
+      r4Text.setText("6");
     }
     if(source == preset2)
     {
-      presets.reset(currentState, nextState);
+      presets.reset(currentState, nextState, blueMaterial);
       presets.preset2(currentState);
     }
     if(source == preset3)
     {
-      presets.reset(currentState, nextState);
+      presets.reset(currentState, nextState, blueMaterial);
       presets.preset3(currentState);
     }
     if(source == preset4)
     {
-      presets.reset(currentState, nextState);
+      presets.reset(currentState, nextState, blueMaterial);
       presets.preset4(currentState);
     }
     if(source == preset5)
     {
-      presets.reset(currentState, nextState);
+      presets.reset(currentState, nextState, blueMaterial);
       presets.preset5(currentState);
+      r1Text.setText("4");
+      r2Text.setText("5");
+      r3Text.setText("7");
+      r4Text.setText("6");
     }
   }
 
@@ -214,6 +235,9 @@ public class Life extends Application implements EventHandler<ActionEvent>
       cube.ry.setAngle(cameraXform.ry.getAngle() - (0.5 * frame));
       cube.rx.setAngle(cameraXform.rx.getAngle() - (0.5 * frame));
       camera.setTranslateZ(scene.getCameraDistance());
+      
+      changingColor(time, updateTime);
+      
       if(time - updateTime >= 1_000_000_000)
       {
         System.out.println(frame - lastFrame);
@@ -226,6 +250,64 @@ public class Life extends Application implements EventHandler<ActionEvent>
       if(time - updateTime >= 900_000_000)
       {
         clearBoard();
+        toLife.clear();
+        toDeath.clear();
+      }
+    }
+  }
+  
+  private void changingColor(long time, long updateTime)
+  {
+    PhongMaterial pinkMaterial = new PhongMaterial();
+    pinkMaterial.setDiffuseColor(Color.PINK);
+    PhongMaterial lifeMaterial = new PhongMaterial();
+    
+    if(time - updateTime >= 150_000_000)
+    {
+      for(Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.AQUAMARINE);
+        c.cellBox.setMaterial(lifeMaterial);
+      }
+    }
+    if(time - updateTime >= 300_000_000)
+    {
+      for(Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.AQUA);
+        c.cellBox.setMaterial(lifeMaterial);
+      }
+    }
+    if(time - updateTime >= 450_000_000)
+    {
+      for(Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.CYAN);
+        c.cellBox.setMaterial(lifeMaterial);
+      }
+    }
+    if(time - updateTime >= 600_000_000)
+    {
+      for(Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.DEEPSKYBLUE);
+        c.cellBox.setMaterial(lifeMaterial);
+      }
+    }
+    if(time - updateTime >= 750_000_000)
+    {
+      for(Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.DODGERBLUE);
+        c.cellBox.setMaterial(lifeMaterial);
+      }
+    }
+    if(time - updateTime >= 900_000_000)
+    {
+      for(Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.BLUE);
+        c.cellBox.setMaterial(lifeMaterial);
       }
     }
   }
@@ -255,10 +337,14 @@ public class Life extends Application implements EventHandler<ActionEvent>
           boolean status = currentState[x][y][z].getStatus();
           if (status && (neighbors > r3 || neighbors < r4))
           {
+            currentState[x][y][z].cellBox.setMaterial(redMaterial);
+            toDeath.add(currentState[x][y][z]);
             nextState[x][y][z] = false;
           }
           else if (!status && (neighbors >= r1 && neighbors <= r2))
           {
+            currentState[x][y][z].cellBox.setMaterial(blueMaterial);
+            toLife.add(currentState[x][y][z]);
             nextState[x][y][z] = true;
           }
           else
@@ -302,26 +388,12 @@ public class Life extends Application implements EventHandler<ActionEvent>
         {
           if(!currentState[x][y][z].getStatus())
           {
+            currentState[x][y][z].cellBox.setMaterial(blueMaterial);
             currentState[x][y][z].cellBox.setVisible(false);
           }
         }
       }
     }
-  }
-
-  private void initializeGame()
-  {
-    for(int x = 1; x < 32; x++)
-    {
-      for(int y = 1; y < 32; y++)
-      {
-        for(int z = 1; z < 32; z++)
-        {
-          currentState[x][y][z] = new Cell(false, x, y, z);
-        }
-      }
-    }
-    presets.randomPreset(currentState);
   }
 
   public static void main(String[] args)
