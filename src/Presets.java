@@ -13,8 +13,8 @@ public class Presets
         for (int z = 1; z < 32; z++)
         {
           board[x][y][z].setDead();
-          board[x][y][z].cellBox.setVisible(false);
           board[x][y][z].cellBox.setMaterial(blueMaterial);
+          board[x][y][z].cellBox.setVisible(false);
           boardTwo[x][y][z] = false;
         }
       }
@@ -35,7 +35,6 @@ public class Presets
           if(n > 85)
           {
             board[x][y][z].setAlive();
-            board[x][y][z].cellBox.setVisible(true);
           }
         }
       }
@@ -53,7 +52,6 @@ public class Presets
           if((x % 2 == 0) && (y % 2 == 0) && (z % 2 == 0))
           {
             board[x][y][z].setAlive();
-            board[x][y][z].cellBox.setVisible(true);
           }
         }
       }
@@ -67,11 +65,8 @@ public class Presets
       for(int j = 1; j < 31; j++)
       {
         board[i][j][j].setAlive();
-        board[i][j][j].cellBox.setVisible(true);
         board[j][j][i].setAlive();
-        board[j][j][i].cellBox.setVisible(true);
         board[j][i][j].setAlive();
-        board[j][i][j].cellBox.setVisible(true);
       }
     }
   }
@@ -87,13 +82,9 @@ public class Presets
           for(int l = 0; l < 4; l++)
           {
             board[j][i + l][k].setAlive();
-            board[j][i + l][k].cellBox.setVisible(true);
             board[j + 1][i + l][k].setAlive();
-            board[j + 1][i + l][k].cellBox.setVisible(true);
             board[j + 2][i + l][k].setAlive();
-            board[j + 2][i + 1][k].cellBox.setVisible(true);
             board[j + 3][i + l][k].setAlive();
-            board[j + 3][i + 1][k].cellBox.setVisible(true);
           }
         }
       }
@@ -107,11 +98,8 @@ public class Presets
       for (int j = 1; j < 31; j ++)
       {
         board[15][i][j].setAlive();
-        board[15][i][j].cellBox.setVisible(true);
         board[i][15][j].setAlive();
-        board[i][15][j].cellBox.setVisible(true);
         board[i][j][15].setAlive();
-        board[i][j][15].cellBox.setVisible(true);
       }
     }
   }
@@ -121,29 +109,17 @@ public class Presets
     for(int i = 1; i < 31; i++)
     {
       board[i][1][1].setAlive();
-      board[i][1][1].cellBox.setVisible(true);
       board[1][i][1].setAlive();
-      board[1][i][1].cellBox.setVisible(true);
       board[1][1][i].setAlive();
-      board[1][1][i].cellBox.setVisible(true);
       board[i][30][30].setAlive();
-      board[i][30][30].cellBox.setVisible(true);
       board[30][i][30].setAlive();
-      board[30][i][30].cellBox.setVisible(true);
       board[30][30][i].setAlive();
-      board[30][30][i].cellBox.setVisible(true);
       board[1][i][i].setAlive();
-      board[1][i][i].cellBox.setVisible(true);
       board[i][1][i].setAlive();
-      board[i][1][i].cellBox.setVisible(true);
       board[i][i][1].setAlive();
-      board[i][i][1].cellBox.setVisible(true);
       board[30][i][i].setAlive();
-      board[30][i][i].cellBox.setVisible(true);
       board[i][30][i].setAlive();
-      board[i][30][i].cellBox.setVisible(true);
       board[i][i][30].setAlive();
-      board[i][i][30].cellBox.setVisible(true);
     }
   }
 }

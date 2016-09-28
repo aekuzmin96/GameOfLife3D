@@ -42,7 +42,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
   private RotateLoop loop;
   private Zoom scene;
   private PhongMaterial blueMaterial;
-  private PhongMaterial redMaterial;
   private ArrayList<Cell> toLife;
   private ArrayList<Cell> toDeath;
   
@@ -101,9 +100,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
     subScene.setCamera(camera);
     
     blueMaterial = new PhongMaterial();
-    blueMaterial.setDiffuseColor(Color.BLUE);
-    redMaterial = new PhongMaterial();
-    redMaterial.setDiffuseColor(Color.RED);
+    blueMaterial.setDiffuseColor(Color.rgb(0, 76, 153));
     toLife = new ArrayList<>();
     toDeath = new ArrayList<>();
     
@@ -240,11 +237,12 @@ public class Life extends Application implements EventHandler<ActionEvent>
       
       if(time - updateTime >= 1_000_000_000)
       {
-        System.out.println(frame - lastFrame);
+        System.out.println("FPS: " + (frame - lastFrame));
         updateConditions();
         updateGame();
         updateTime = time;
         lastFrame = frame;
+        resetCellColors();
       }
       
       if(time - updateTime >= 900_000_000)
@@ -258,58 +256,107 @@ public class Life extends Application implements EventHandler<ActionEvent>
   
   private void changingColor(long time, long updateTime)
   {
-    PhongMaterial pinkMaterial = new PhongMaterial();
-    pinkMaterial.setDiffuseColor(Color.PINK);
+    PhongMaterial deathMaterial = new PhongMaterial();
     PhongMaterial lifeMaterial = new PhongMaterial();
     
     if(time - updateTime >= 150_000_000)
     {
       for(Cell c : toLife)
       {
-        lifeMaterial.setDiffuseColor(Color.AQUAMARINE);
+        lifeMaterial.setDiffuseColor(Color.rgb(153, 255, 255));
         c.cellBox.setMaterial(lifeMaterial);
+      }
+      for(Cell c : toDeath)
+      {
+        deathMaterial.setDiffuseColor(Color.rgb(76, 0, 153));
+        c.cellBox.setMaterial(deathMaterial);
       }
     }
     if(time - updateTime >= 300_000_000)
     {
       for(Cell c : toLife)
       {
-        lifeMaterial.setDiffuseColor(Color.AQUA);
+        lifeMaterial.setDiffuseColor(Color.rgb(102, 178, 255));
         c.cellBox.setMaterial(lifeMaterial);
+      }
+      for(Cell c : toDeath)
+      {
+        deathMaterial.setDiffuseColor(Color.rgb(153, 0, 76));
+        c.cellBox.setMaterial(deathMaterial);
       }
     }
     if(time - updateTime >= 450_000_000)
     {
       for(Cell c : toLife)
       {
-        lifeMaterial.setDiffuseColor(Color.CYAN);
+        lifeMaterial.setDiffuseColor(Color.rgb(51, 153, 255));
         c.cellBox.setMaterial(lifeMaterial);
+      }
+      for(Cell c : toDeath)
+      {
+        deathMaterial.setDiffuseColor(Color.rgb(153, 0, 0));
+        c.cellBox.setMaterial(deathMaterial);
       }
     }
     if(time - updateTime >= 600_000_000)
     {
       for(Cell c : toLife)
       {
-        lifeMaterial.setDiffuseColor(Color.DEEPSKYBLUE);
+        lifeMaterial.setDiffuseColor(Color.rgb(0, 128, 255));
         c.cellBox.setMaterial(lifeMaterial);
+      }
+      for(Cell c : toDeath)
+      {
+        deathMaterial.setDiffuseColor(Color.rgb(204, 0, 0));
+        c.cellBox.setMaterial(deathMaterial);
       }
     }
     if(time - updateTime >= 750_000_000)
     {
       for(Cell c : toLife)
       {
-        lifeMaterial.setDiffuseColor(Color.DODGERBLUE);
+        lifeMaterial.setDiffuseColor(Color.rgb(0, 102, 204));
         c.cellBox.setMaterial(lifeMaterial);
+      }
+      for(Cell c : toDeath)
+      {
+      deathMaterial.setDiffuseColor(Color.rgb(255, 0, 0));
+      c.cellBox.setMaterial(deathMaterial);
       }
     }
     if(time - updateTime >= 900_000_000)
     {
       for(Cell c : toLife)
       {
-        lifeMaterial.setDiffuseColor(Color.BLUE);
+        lifeMaterial.setDiffuseColor(Color.rgb(0, 76, 153));
         c.cellBox.setMaterial(lifeMaterial);
       }
+      for(Cell c : toDeath)
+      {
+        deathMaterial.setDiffuseColor(Color.rgb(255, 51, 51));
+        c.cellBox.setMaterial(deathMaterial);
+      }
     }
+  }
+  
+  private void resetCellColors()
+  {
+    int aliveCells = 0;
+    for(int x = 1; x < 31; x++)
+    {
+      for (int y = 1; y < 31; y++)
+      {
+        for (int z = 1; z < 31; z++)
+        {
+          currentState[x][y][z].cellBox.setMaterial(blueMaterial);
+          if(currentState[x][y][z].getStatus())
+          {
+            aliveCells++;
+          }
+        }
+      }
+    }
+    System.out.println("Alive Cells: " + aliveCells);
   }
 
   private void updateConditions()
@@ -337,13 +384,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
           boolean status = currentState[x][y][z].getStatus();
           if (status && (neighbors > r3 || neighbors < r4))
           {
-            currentState[x][y][z].cellBox.setMaterial(redMaterial);
             toDeath.add(currentState[x][y][z]);
             nextState[x][y][z] = false;
           }
           else if (!status && (neighbors >= r1 && neighbors <= r2))
           {
-            currentState[x][y][z].cellBox.setMaterial(blueMaterial);
             toLife.add(currentState[x][y][z]);
             nextState[x][y][z] = true;
           }
