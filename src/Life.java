@@ -238,11 +238,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
       if(time - updateTime >= 1_000_000_000)
       {
         System.out.println("FPS: " + (frame - lastFrame));
+        resetCellColors();
         updateConditions();
         updateGame();
         updateTime = time;
         lastFrame = frame;
-        resetCellColors();
       }
       
       if(time - updateTime >= 900_000_000)
