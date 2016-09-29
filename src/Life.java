@@ -219,6 +219,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r4Text.setDisable(true);
       loop.start();
     }
+    //Resets the cube and loads the Random Preset and unique R values
     if (source == randomButton)
     {
       presets.reset(currentState, nextState, blueMaterial);
@@ -228,6 +229,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r3Text.setText("10");
       r4Text.setText("6");
     }
+    //Resets the cube and loads the Preset 1 and unique R values
     if (source == preset1)
     {
       presets.reset(currentState, nextState, blueMaterial);
@@ -237,6 +239,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r3Text.setText("18");
       r4Text.setText("6");
     }
+    //Resets the cube and loads the Preset 2 and unique R values
     if (source == preset2)
     {
       presets.reset(currentState, nextState, blueMaterial);
@@ -246,6 +249,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r3Text.setText("13");
       r4Text.setText("6");
     }
+    //Resets the cube and loads the Preset 3 and unique R values
     if (source == preset3)
     {
       presets.reset(currentState, nextState, blueMaterial);
@@ -255,6 +259,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r3Text.setText("4");
       r4Text.setText("4");
     }
+    //Resets the cube and loads the Preset 4 and unique R values
     if (source == preset4)
     {
       presets.reset(currentState, nextState, blueMaterial);
@@ -264,6 +269,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r3Text.setText("5");
       r4Text.setText("3");
     }
+    //Resets the cube and loads the Preset 5 and unique R values
     if (source == preset5)
     {
       presets.reset(currentState, nextState, blueMaterial);
@@ -274,12 +280,18 @@ public class Life extends Application implements EventHandler<ActionEvent>
       r4Text.setText("1");
     }
   }
-
+  
+  /**
+   * Class that does the animation for the cells inside the cube
+   * based on an AnimationTimer. Updates happen every second. A cell
+   * either dies or comes to life. Also, the cube has a smooth rotation
+   * in the X and Y axis.
+   */
   private class RotateLoop extends AnimationTimer
   {
     int frame = 0;
-    long updateTime = 0;
-    int lastFrame = 0;
+    long updateTime = 0; //Used to set the update rate
+    //int lastFrame = 0; //Used to test the FPS
 
     @Override
     public void handle(long time)
@@ -289,17 +301,20 @@ public class Life extends Application implements EventHandler<ActionEvent>
       cube.rx.setAngle(cameraXform.rx.getAngle() - (0.5 * frame));
       camera.setTranslateZ(scene.getCameraDistance());
 
+      //Change the color while dying or coming to life
       changingColor(time, updateTime);
 
+      //Update the cube every second and the R values if they changed
       if (time - updateTime >= 1_000_000_000)
       {
-        System.out.println("FPS: " + (frame - lastFrame));
+        //System.out.println("FPS: " + (frame - lastFrame));
         updateConditions();
         updateGame();
         updateTime = time;
-        lastFrame = frame;
+        //lastFrame = frame;
       }
 
+      //Clear the cube of dead cells and reset the ArrayLists
       if (time - updateTime >= 900_000_000)
       {
         clearBoard();
@@ -312,8 +327,8 @@ public class Life extends Application implements EventHandler<ActionEvent>
   /**
    * Sets up the colors for the cells that are coming to life and
    * dying in the next generation.
-   * Coming to life: starts with a bright blue and fades to a medium blue
-   * Dying: fades to a purple, then dark red, then bright red
+   * toLife: starts with a bright blue and fades to a medium blue
+   * toDeath: fades to a purple, then dark red, then bright red
    *
    * @param time current time
    * @param updateTime time since last update
@@ -323,7 +338,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
     PhongMaterial deathMaterial = new PhongMaterial();
     PhongMaterial lifeMaterial = new PhongMaterial();
 
-    if (time - updateTime >= 150_000_000)
+    if (time - updateTime <= 150_000_000)
     {
       for (Cell c : toLife)
       {
@@ -336,7 +351,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         c.cellBox.setMaterial(deathMaterial);
       }
     }
-    if (time - updateTime >= 300_000_000)
+    else if (time - updateTime <= 300_000_000)
     {
       for (Cell c : toLife)
       {
@@ -349,7 +364,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         c.cellBox.setMaterial(deathMaterial);
       }
     }
-    if (time - updateTime >= 450_000_000)
+    else if (time - updateTime <= 450_000_000)
     {
       for (Cell c : toLife)
       {
@@ -362,7 +377,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         c.cellBox.setMaterial(deathMaterial);
       }
     }
-    if (time - updateTime >= 600_000_000)
+    else if (time - updateTime <= 600_000_000)
     {
       for (Cell c : toLife)
       {
@@ -375,7 +390,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         c.cellBox.setMaterial(deathMaterial);
       }
     }
-    if (time - updateTime >= 750_000_000)
+    else if (time - updateTime <= 750_000_000)
     {
       for (Cell c : toLife)
       {
@@ -388,7 +403,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
         c.cellBox.setMaterial(deathMaterial);
       }
     }
-    if (time - updateTime >= 900_000_000)
+    else if (time - updateTime <= 900_000_000)
     {
       for (Cell c : toLife)
       {
@@ -398,6 +413,18 @@ public class Life extends Application implements EventHandler<ActionEvent>
       for (Cell c : toDeath)
       {
         deathMaterial.setDiffuseColor(Color.rgb(255, 51, 51));
+        c.cellBox.setMaterial(deathMaterial);
+      }
+    }
+    else {
+      for (Cell c : toLife)
+      {
+        lifeMaterial.setDiffuseColor(Color.rgb(0, 76, 153));
+        c.cellBox.setMaterial(lifeMaterial);
+      }
+      for (Cell c : toDeath)
+      {
+        deathMaterial.setDiffuseColor(Color.rgb(0, 76, 153));
         c.cellBox.setMaterial(deathMaterial);
       }
     }
@@ -420,9 +447,20 @@ public class Life extends Application implements EventHandler<ActionEvent>
     {
     }
   }
-
+  
+  /**
+   * The game loop that determines whether a cell dies or stays alive. If
+   * the requirements don't apply to the cell, then it stays the same in
+   * the next generation.
+   *
+   * Cell requirements:
+   * toLife = have more than or equal to r1 and less than or equal to r2 neighbors
+   * toDeath = have more than r3 or less than r4 neighbors
+   */
   private void updateGame()
   {
+    //Sets up the next generation based on the current generation and
+    //the cell requirements.
     for (int x = 1; x < 31; x++)
     {
       for (int y = 1; y < 31; y++)
@@ -447,6 +485,11 @@ public class Life extends Application implements EventHandler<ActionEvent>
       }
     }
 
+    /**
+     * Compares the next generation to the current generation and makes
+      * changes to the current generation accordingly. If it dies, play the
+      * death animation, and if it comes to life, play the other animation.
+     */
     for (int x = 1; x < 31; x++)
     {
       for (int y = 1; y < 31; y++)
@@ -470,7 +513,7 @@ public class Life extends Application implements EventHandler<ActionEvent>
   }
 
   /**
-   * Sets any dead cells to be blue and invisible to increase
+   * Sets any dead cells to be invisible to increase
    * performance and decrease memory usage.
    */
   private void clearBoard()
@@ -481,7 +524,6 @@ public class Life extends Application implements EventHandler<ActionEvent>
       {
         for (int z = 1; z < 31; z++)
         {
-          currentState[x][y][z].cellBox.setMaterial(blueMaterial);
           if (!currentState[x][y][z].getStatus())
           {
             currentState[x][y][z].cellBox.setVisible(false);
